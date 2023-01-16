@@ -6,11 +6,8 @@ public class TaskContext
     public Friend Friend { get; }
     public Hall Hall { get; }
 
-    public ContendersGenerator Generator { get; }
-
-    public TaskContext(ContendersGenerator generator)
+    public TaskContext()
     {
-        Generator = generator;
         Princess = new Princess(this);
         Friend = new Friend();
         Hall = new Hall();

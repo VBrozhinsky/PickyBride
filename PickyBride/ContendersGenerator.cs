@@ -28,7 +28,7 @@ public class ContendersGenerator
         return contenders.OrderBy(contender => random.Next()).ToList();
     }
 
-    public List<RatingContender> GetShuffledContenders()
+    public virtual List<RatingContender> GetShuffledContenders()
     {
         var contenders = new List<RatingContender>();
         foreach (var row in GetDataFromFile())
