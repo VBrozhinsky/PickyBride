@@ -1,5 +1,5 @@
-﻿using Moq;
-using Moq.Protected;
+﻿//using Moq;
+//using Moq.Protected;
 using PickyBride;
 
 namespace TestPickyBride;
@@ -9,6 +9,9 @@ public class PrincessTest
     [Fact]
     public void ChooseBestContenderTest()
     {
+        var hall = new Hall();
+        var friend = new Friend();
+        var princess = new Princess(friend, hall);
         var contenders = new List<RatingContender>();
         for (var i = TestsHelper.ContendersNumber - 2; i >= 0; --i)
         {
@@ -17,9 +20,8 @@ public class PrincessTest
 
         contenders.Add(new RatingContender("", "", TestsHelper.ContendersNumber - 1));
 
-        var context = new TaskContext();
-        context.Hall.InviteContenders(contenders);
-        var chosenContender = context.Princess.MakeChoice();
+        hall.InviteContenders(contenders);
+        var chosenContender = princess.MakeChoice();
         Assert.NotNull(chosenContender);
         Assert.Equal(TestsHelper.ContendersNumber - 1, ((RatingContender)chosenContender).Rating);
     }
@@ -27,24 +29,28 @@ public class PrincessTest
     [Fact]
     public void NotChooseAnyContenderTest()
     {
+        var hall = new Hall();
+        var friend = new Friend();
+        var princess = new Princess(friend, hall);
         var contenders = new List<RatingContender>();
         for (var i = TestsHelper.ContendersNumber - 1; i >= 0; --i)
         {
             contenders.Add(new RatingContender("", "", i));
         }
 
-        var context = new TaskContext();
-        context.Hall.InviteContenders(contenders);
-        var chosenContender = context.Princess.MakeChoice();
+        hall.InviteContenders(contenders);
+        var chosenContender = princess.MakeChoice();
         Assert.Null(chosenContender);
     }
 
     [Fact]
     public void ExceptionWhileAskNextTest()
     {
+        var hall = new Hall();
+        var friend = new Friend();
+        var princess = new Princess(friend, hall);
         var contenders = new List<RatingContender>();
-        var context = new TaskContext();
-        context.Hall.InviteContenders(contenders);
-        Assert.Throws<ArgumentException>(() => context.Princess.MakeChoice());
+        hall.InviteContenders(contenders);
+        Assert.Throws<ArgumentException>(() => princess.MakeChoice());
     }
 }

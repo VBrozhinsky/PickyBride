@@ -16,7 +16,6 @@ public static class Program
         {
             services.AddHostedService<TaskSimulator>();
             services.AddScoped<ContendersGenerator>();
-            services.AddScoped<TaskContext>();
             services.AddScoped<Princess>();
             services.AddScoped<Hall>();
             services.AddScoped<Friend>();

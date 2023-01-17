@@ -7,11 +7,16 @@ public class Princess
 
     private readonly List<Contender> _visitedContenders = new();
 
-    private readonly TaskContext _context;
+    //private readonly TaskContext _context;
 
-    public Princess(TaskContext taskContext)
+    private readonly Friend _friend;
+
+    private readonly Hall _hall;
+
+    public Princess(Friend friend, Hall hall)
     {
-        _context = taskContext;
+        _friend = friend;
+        _hall = hall;
     }
 
     private void RememberVisitedContender(Contender contender, Friend friend)
@@ -36,14 +41,14 @@ public class Princess
 
     public Contender? MakeChoice()
     {
-        SkipForeverByFactor(_context.Hall, _context.Friend);
-        while (_context.Hall.GetQueueCount() > 0)
+        SkipForeverByFactor(_hall, _friend);
+        while (_hall.GetQueueCount() > 0)
         {
-            var contender = _context.Hall.GetNextContender();
+            var contender = _hall.GetNextContender();
             var contendersCounter = 0;
             foreach (var visitedContender in _visitedContenders)
             {
-                var friendAnswer = _context.Friend.ReplyToComparison(
+                var friendAnswer = _friend.ReplyToComparison(
                     newContender: contender,
                     oldContender: visitedContender);
                 if (friendAnswer)
@@ -52,12 +57,12 @@ public class Princess
                 }
             }
 
-            if (contendersCounter >= _context.Hall.QueueInitialCount * ContendersToSkipFactor * ContendersLimitFactor)
+            if (contendersCounter >= _hall.QueueInitialCount * ContendersToSkipFactor * ContendersLimitFactor)
             {
                 return contender;
             }
 
-            RememberVisitedContender(contender, _context.Friend);
+            RememberVisitedContender(contender, _friend);
         }
 
         return null;
